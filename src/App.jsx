@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import DataDisplay from './DataDisplay';
 
 function App() {
 
   const canvas1Ref = useRef(null);
   const canvas2Ref = useRef(null);
   const viewPort1 = useRef({ x: 0, y:0 , scale: 1 });
-  const viewPort2 = useRef({ x: 0, y:0 , scale: 1 });  
+  const viewPort2 = useRef({ x: 0, y:0 , scale: 1 });
+  const [vT1Data, setVT1Data] = useState(viewPort1.current);  
+
   let ctx1 = useRef(null);
   let ctx2 = useRef(null);
 
@@ -22,12 +25,11 @@ function App() {
   * */
   useEffect(()=>{
     //Necesitamos que los canvas esten cargados en el DOM antes de pedir su contexto.
-    ctx1 = canvas1Ref.current.getContext('2d');
-    ctx2 = canvas2Ref.current.getContext('2d'); 
+    ctx1.current = canvas1Ref.current.getContext('2d');
+    ctx2.current = canvas2Ref.current.getContext('2d'); 
 
-    console.log(ctx1);
     render1();
-    render2(ctx2);
+    render2(ctx2.current);
 
   },[]);
 
@@ -48,11 +50,11 @@ function App() {
   const render1 = () =>{
     const vt = viewPort1.current;
 
-    ctx1.setTransform(1, 0, 0, 1, 0, 0);
-    clearCanvas(ctx1);
-    ctx1.setTransform(vt.scale, 0, 0, vt.scale, vt.x, vt.y);
-    drawRectangle(ctx1, 0, 0, 100, 100, 'red');
-    drawRectangle(ctx1, 200, 200, 100, 100, 'blue');
+    ctx1.current.setTransform(1, 0, 0, 1, 0, 0);
+    clearCanvas(ctx1.current);
+    ctx1.current.setTransform(vt.scale, 0, 0, vt.scale, vt.x, vt.y);
+    drawRectangle(ctx1.current, 0, 0, 100, 100, 'red');
+    drawRectangle(ctx1.current, 200, 200, 100, 100, 'blue');
   }
 
   const render2 = (ctx) =>{
@@ -88,7 +90,7 @@ function App() {
     previousX.current = localX;
     previousY.current = localY;
 
-    console.log(vt.current);
+    setVT1Data({...viewPort1.current});
   }
 
   //Eventos
@@ -121,11 +123,12 @@ function App() {
 
   return (
     <div className='container'>
-      <div>
+      <div className='canvasHolder'>
         <h1>Canvas 1</h1>
+        <DataDisplay data = {vT1Data}></DataDisplay>
         <canvas id='canvas1' ref={canvas1Ref} width={500} height={500} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}></canvas>
       </div>
-      <div>
+      <div className='canvasHolder'>
         <h1>Canvas 2</h1>
         <canvas id='canvas2' ref={canvas2Ref} width={500} height={500} onMouseDown={handleMouseDown}onMouseUp={handleMouseUp}></canvas>
       </div>
