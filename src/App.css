@@ -1,0 +1,15 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.container{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+canvas{
+  border: 2px solid black;
+  background-color: white;
+}
