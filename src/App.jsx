@@ -8,7 +8,9 @@ function App() {
   const canvas2Ref = useRef(null);
   const viewPort1 = useRef({ x: 0, y:0 , scale: 1 });
   const viewPort2 = useRef({ x: 0, y:0 , scale: 1 });
-  const [vT1Data, setVT1Data] = useState(viewPort1.current);  
+
+  const [vT1Data, setVT1Data] = useState(viewPort1.current);
+  const [vT2Data, setVT2Data] = useState(viewPort2.current);   
 
   let ctx1 = useRef(null);
   let ctx2 = useRef(null);
@@ -47,6 +49,7 @@ function App() {
 
   //Render
 
+  //Method for Canvas1 that uses setTransform
   const render1 = () =>{
     const vt = viewPort1.current;
 
@@ -58,9 +61,10 @@ function App() {
   }
 
   const render2 = (ctx) =>{
+
     clearCanvas(ctx);
-    drawRectangle(ctx, 0, 0, 100, 100, 'red');
-    drawRectangle(ctx, 200, 200, 100, 100, 'blue');
+    drawRectangle(ctx, toVirtualX(0), toVirtualY(0), 100, 100, 'red');
+    drawRectangle(ctx, toVirtualX(200), toVirtualY(200), 100, 100, 'blue');
   }
 
   //Conversiones
@@ -90,7 +94,10 @@ function App() {
     previousX.current = localX;
     previousY.current = localY;
 
-    setVT1Data({...viewPort1.current});
+    
+
+    //console.log(vt);
+    //console.log(vt.current);
   }
 
   //Eventos
@@ -116,6 +123,14 @@ function App() {
     if (e.target.id == 'canvas1') {
       updateVTPanning(e, viewPort1);
       render1();
+      setVT1Data({...viewPort1.current});
+    }
+
+    if (e.target.id == 'canvas2') {
+      //console.log("Vamos a actualizar el panning del viewport2")
+      updateVTPanning(e, viewPort2);
+      render2(ctx2.current);
+      setVT2Data({...viewPort2.current});
     }
     
     console.log('mouse is moving')
@@ -130,6 +145,7 @@ function App() {
       </div>
       <div className='canvasHolder'>
         <h1>Canvas 2</h1>
+        <DataDisplay data = {vT2Data}></DataDisplay>
         <canvas id='canvas2' ref={canvas2Ref} width={500} height={500} onMouseDown={handleMouseDown}onMouseUp={handleMouseUp}></canvas>
       </div>
     </div>
