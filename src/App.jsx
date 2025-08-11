@@ -92,12 +92,6 @@ function App() {
   const toLocalY =(y) => {
     return y / viewPort2.current.scale - viewPort2.current.y;
   }
-  //const toVirtualHeight = () => {
-  //  
-  //}  
-  //const toVirtualHeight = () => {
-  //  
-  //}
 
   //Panning
 
@@ -137,14 +131,11 @@ function App() {
     previousX.current= e.clientX;      
     previousY.current= e.clientY;    
 
-    console.log('mouse down on:', e.target.id, ' dragging =',dragging.current);
-
     e.target.addEventListener('mousemove', handleMouseMove);
   }
 
   const handleMouseUp = (e) =>{
     dragging.current = false;
-    console.log('mouse release, dragging =', dragging.current);
   }
 
   const handleMouseMove = (e) =>{
@@ -157,13 +148,11 @@ function App() {
     }
 
     if (e.target.id == 'canvas2') {
-      //console.log("Vamos a actualizar el panning del viewport2")
       updateVTPanning(e, viewPort2);
       render2(ctx2.current);
       setVT2Data({...viewPort2.current});
     }
     
-    console.log('mouse is moving')
   }
 
   const handleMouseWheel = (e) =>{
@@ -176,25 +165,23 @@ function App() {
       }
 
       if (e.target.id == 'canvas2') {
-        //console.log("Vamos a actualizar el panning del viewport2")
         updateVTZooming(e, viewPort2,canvas2Ref.current);
         render2(ctx2.current);
         setVT2Data({...viewPort2.current});
       }
     }
 
-    //console.log(e);
   }
 
   return (
     <div className='container'>
       <div className='canvasHolder'>
-        <h1>Canvas 1</h1>
+        <h1>Canvas with setTransform</h1>
         <DataDisplay data = {vT1Data}></DataDisplay>
         <canvas id='canvas1' ref={canvas1Ref} width={500} height={500} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} ></canvas>
       </div>
       <div className='canvasHolder'>
-        <h1>Canvas 2</h1>
+        <h1>Canvas with manual mapping</h1>
         <DataDisplay data = {vT2Data}></DataDisplay>
         <canvas id='canvas2' ref={canvas2Ref} width={500} height={500} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} ></canvas>
       </div>
