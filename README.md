@@ -6,7 +6,6 @@ We have used as reference these two articles:
 - https://www.sandromaglione.com/articles/infinite-canvas-html-with-zoom-and-panhttps://www.sandromaglione.com/articles/infinite-canvas-html-with-zoom-and-pan
 
 <br>
-<br>
 
 ___
 # Comparing the two methods
